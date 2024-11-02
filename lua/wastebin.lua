@@ -3,7 +3,7 @@ local M = {}
 local defaults = {
 	url = vim.env.WASTEBIN_URL,
 	post_cmd = "curl -s -H 'Content-Type: application/json' --data-binary @- ",
-	open_cmd = "xdg-open",
+	open_cmd = "open",
 	cpy_cmd = "wl-copy",
 }
 
@@ -115,7 +115,7 @@ M._internal_copy_cmd = function(params)
 					on_stdout = function(_, data)
 						if #data[1] > 0 then
 							response = vim.fn.json_decode(data[1])
-							vim.fn.setreg("+", response.path)
+							vim.fn.setreg("+", M.config.url .. response.path)
 						end
 					end,
 				})
