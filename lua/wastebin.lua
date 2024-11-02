@@ -67,14 +67,17 @@ M._internal_paste_cmd = function(params)
   function(choice)
     if choice == "yes" then
       local text = ""
+	  local cmd = M.config.open_cmd
 
-      if params.range > 0 then
+	  if params.range > 0 then
+		cmd = params[1]
+      if params.range > 1 then
         text = get_visual_selection()
       else
         text = get_buffer_text()
       end
 
-      local job = vim.fn.jobstart(M.config.post_cmd .. M.config.url, {
+      local job = vim.fn.jobstart(cmd .. M.config.url, {
         on_stdout = function(_, data)
           if #data[1] > 0 then
             response = vim.fn.json_decode(data[1])
